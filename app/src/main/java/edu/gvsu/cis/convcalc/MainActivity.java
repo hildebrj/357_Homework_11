@@ -108,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
 
         calcButton.setOnClickListener(v -> {
             doConversion();
+            temperature.setVisibility(View.VISIBLE);
+            current.setVisibility(View.VISIBLE);
+            weatherIcon.setVisibility(View.VISIBLE);
         });
 
         clearButton.setOnClickListener(v -> {

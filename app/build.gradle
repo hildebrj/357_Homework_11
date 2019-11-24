@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -41,5 +42,3 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.2.1'
 
 }
-
-apply plugin: 'com.google.gms.google-services'

@@ -27,8 +27,7 @@ public class WeatherService extends IntentService {
     private static final String TAG = "WeatherService";
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_WEATHER_AT = "edu.gvsu.cis.webservice.action.WEATHER_AT";
-    // TODO: Update the base url with your own private key.
-    private static final String BASE_URL = "https://api.darksky.net/forecast/YOUR_DARKSKY_KEY_GOES_HERE";
+    private static final String BASE_URL = "https://api.darksky.net/forecast/f2262f34dda1d0b6550bcf0797b1594c";
     public static final String BROADCAST_WEATHER = "edu.gvsu.cis.webservice.action.BROADCAST";
     private static final String EXTRA_KEY = "edu.gvsu.cis.webservice.extra.KEY";
     private static final String EXTRA_LAT = "edu.gvsu.cis.webservice.extra.LAT";
@@ -72,8 +71,7 @@ public class WeatherService extends IntentService {
      */
     private void fetchWeatherData(String key, String lat, String lon) {
         try {
-            // TODO: Format the url based on the input params
-            URL url = new URL(BASE_URL + "UPDATE THIS PART OF THE URL");
+            URL url = new URL(BASE_URL + "/" + String.format("%s, %s", lat, lon));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(5000 /* milliseconds */);
             conn.setConnectTimeout(10000 /* milliseconds */);
@@ -94,13 +92,16 @@ public class WeatherService extends IntentService {
                 JSONObject data = new JSONObject(new String(baos.toByteArray()));
                 JSONObject current = data.getJSONObject("currently");
 
-                // TODO: extract the values you need out of current
+                String condition = current.getString("summary");
+                String icon = current.getString("icon");
+                Double temp = current.getDouble("temperature");
 
                 Intent result = new Intent(BROADCAST_WEATHER);
 
-                // TODO: use putExtra to add the extracted values to your broadcast
-
                 result.putExtra("KEY", key);
+                result.putExtra("SUMMARY", condition);
+                result.putExtra("ICON", icon);
+                result.putExtra("TEMPERATURE", temp);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
             }
         } catch (MalformedURLException e) {
